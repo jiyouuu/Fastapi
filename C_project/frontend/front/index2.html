@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>🎙️ Whisper STT 모의 ui만 테스트</title>
+  <style>
+    body {
+      font-family: "Noto Sans KR", sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    #recordBtn {
+      background: #7a1c63;
+      border: none;
+      color: white;
+      font-size: 18px;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #recordBtn:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h2>🎤 Whisper 음성 인식 모의 ui만  테스트</h2>
+  <button id="recordBtn">🎙️ 녹음 시작</button>
+  <p id="status">준비 완료</p>
+  <div id="result" style="margin-top:20px; font-weight:bold;"></div>
+
+  <script>
+    const recordBtn = document.getElementById("recordBtn");
+    const statusText = document.getElementById("status");
+    const resultDiv = document.getElementById("result");
+
+    recordBtn.onclick = async () => {
+      // 🎭 디버그용: 마이크 없이 UI만 동작
+      recordBtn.disabled = true;
+      statusText.textContent = "🎧 녹음 중... (모의 동작)";
+      setTimeout(() => {
+        statusText.textContent = "⏳ 전송 중... (가짜 요청)";
+      }, 1500);
+
+      // 🔹 3초 후 '결과' 표시
+      setTimeout(() => {
+        statusText.textContent = "✅ 인식 완료!";
+        resultDiv.textContent = "결과: (샘플) 안녕하세요 테스트 음성입니다.";
+        recordBtn.disabled = false;
+      }, 3000);
+    };
+  </script>
+</body>
+</html>
