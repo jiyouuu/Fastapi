@@ -1,135 +1,16 @@
-<!-- <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>🎤 STT 테스트</title>
-  <style>
-    body { font-family: "Noto Sans KR", sans-serif; text-align:center; margin-top:80px; }
-    button { font-size: 18px; padding: 12px 24px; border:none; border-radius:8px; background-color:#6F9F3C; color:white; cursor:pointer; }
-    button:disabled { background-color:#ccc; cursor: not-allowed; }
-    #result { margin-top: 30px; font-size: 20px; color:#333; white-space: pre-wrap; }
-  </style>
-</head>
-<body>
-
-  <h2>🎙️ 실시간 음성 인식 테스트</h2>
-  <p>3초 동안 말하고 결과를 확인해보세요!</p>
-
-  <button id="recordBtn">🎤 녹음 시작</button>
-  <p id="status"></p>
-  <div id="result"></div>
-
-  <script>
-    const recordBtn = document.getElementById("recordBtn");
-    const statusText = document.getElementById("status");
-    const resultDiv = document.getElementById("result");
-    let mediaRecorder, audioChunks = [];
-
-      recordBtn.onclick = async () => {
-    try {
-      // 🎤 마이크 접근 권한 요청
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-      // 🎙️ 녹음기 초기화
-      mediaRecorder = new MediaRecorder(stream);
-      audioChunks = [];
-
-      recordBtn.disabled = true;
-      statusText.textContent = "🎧 녹음 중... 3초 동안 말해주세요.";
-
-      // 🔹 음성 데이터 수집 이벤트
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          audioChunks.push(e.data);
-        }
-      };
-
-      // 🔹 녹음 종료 시점 처리
-      mediaRecorder.onstop = async () => {
-        if (audioChunks.length === 0) {
-          statusText.textContent = "⚠️ 녹음된 오디오 데이터가 없습니다.";
-          recordBtn.disabled = false;
-          return;
-        }
-
-        // ✅ 녹음된 조각들을 하나의 파일로 합치기
-        const blob = new Blob(audioChunks, { type: "audio/webm"});
-        console.log("🎵 Blob 크기:", blob.size, "bytes");
-
-        if (blob.size === 0) {
-          statusText.textContent = "⚠️ 빈 오디오가 전송되었습니다.";
-          recordBtn.disabled = false;
-          return;
-        }
-
-        // 📦 서버로 전송 준비
-        statusText.textContent = "⏳ 서버로 전송 중...";
-        const formData = new FormData();
-        formData.append("audio_file", blob, "voice.wav");
-
-        try {
-          const res = await fetch("http://127.0.0.1:8000/stt", {
-            method: "POST",
-            body: formData,
-          });
-
-          const data = await res.json();
-
-          if (res.ok) {
-            statusText.textContent = "✅ 인식 완료!";
-            resultDiv.textContent = "결과: " + data.text;
-          } else {
-            statusText.textContent = "❌ 오류 발생!";
-            resultDiv.textContent = "서버 오류: " + (data.detail || data.error);
-          }
-        } catch (err) {
-          console.error("전송 오류:", err);
-          statusText.textContent = "❌ 서버 연결 실패!";
-        } finally {
-          recordBtn.disabled = false;
-        }
-      };
-
-      // 🎬 녹음 시작
-      mediaRecorder.start();
-      console.log("녹음 시작!");
-
-      // 🕒 3초 뒤 녹음 종료
-      setTimeout(() => {
-        if (mediaRecorder.state !== "inactive") {
-          mediaRecorder.stop();
-          console.log("녹음 종료!");
-        }
-      }, 3000);
-
-    } catch (err) {
-      console.error("마이크 오류:", err);
-      statusText.textContent = "🎤 마이크 접근이 거부되었거나 오류가 발생했습니다.";
-    }
-  };
-
-  </script>
-
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <title>AI 음성 상담 챗봇</title>
-  <link rel="stylesheet" href="/src/style.css" />
-</head>
-<body>
-  <div class="chat-container">
-    <h2>🎧 AI 음성 상담 챗봇</h2>
-    <div id="chat-box" class="chat-box"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이혼 감성 상담 챗봇</title>
+    <link rel="stylesheet" href="/src/style/style.css" />
+  </head>
+  <body>
+    <header id="header"></header>
+    <main id="app"></main>
+    <footer id="footer"></footer>
 
-    <div class="controls">
-      <button id="recordBtn">🎤 녹음하기</button>
-    </div>
-  </div>
-
-  <script type="module" src="/src/main.js"></script>
-</body>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
